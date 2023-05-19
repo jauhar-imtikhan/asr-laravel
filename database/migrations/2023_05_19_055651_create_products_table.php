@@ -15,6 +15,18 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->integer('id_kategori');
+            $table->integer('id_subkategori');
+            $table->string('nama_barang');
+            $table->string('gambar');
+            $table->text('deskripsi');
+            $table->integer('harga');
+            $table->integer('diskon');
+            $table->string('bahan');
+            $table->string('tags');
+            $table->string('sku');
+            $table->string('ukuran');
+            $table->string('warna');
             $table->timestamps();
         });
     }

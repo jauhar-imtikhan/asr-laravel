@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
+use App\Models\Testimoni;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
-class CategoryController extends Controller
+class TestimoniController extends Controller
 {
 
     public function __construct()
@@ -17,11 +17,11 @@ class CategoryController extends Controller
 
     public function index()
     {
-        $categories = Category::all();
+        $testi = Testimoni::all();
 
         return response()->json([
             'message' => 'success',
-            'data' => $categories
+            'data' => $testi
         ]);
     }
 
@@ -35,7 +35,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nama_kategori' => 'required',
+            'nama_testimoni' => 'required',
             'deskripsi' => 'required',
             'gambar' => 'required|image|mimes:jpg,png,jpeg,svg'
         ]);
@@ -54,10 +54,10 @@ class CategoryController extends Controller
             $input['gambar'] = $nama_gambar;
         }
 
-        $categories =   Category::create($input);
+        $testi =   Testimoni::create($input);
         return response()->json([
             'message' => 'success',
-            'data' => $categories
+            'data' => $testi
         ]);
     }
 
@@ -74,10 +74,10 @@ class CategoryController extends Controller
     }
 
 
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Testimoni $testimoni)
     {
         $validator = Validator::make($request->all(), [
-            'nama_kategori' => 'required',
+            'nama_testimoni' => 'required',
             'deskripsi' => 'required',
         ]);
         if ($validator->fails()) {
@@ -89,7 +89,7 @@ class CategoryController extends Controller
 
         $input  = $request->all();
         if ($request->has('gambar')) {
-            File::delete('uploads/' . $category->gambar);
+            File::delete('uploads/' . $testimoni->gambar);
             $gambar = $request->file('gambar');
             $nama_gambar = time() . rand(1, 9) . '.' . $gambar->getClientOriginalExtension();
             $gambar->move('uploads', $nama_gambar);
@@ -98,18 +98,18 @@ class CategoryController extends Controller
             unset($input['gambar']);
         }
 
-        $category->update($input);
+        $testimoni->update($input);
         return response()->json([
-            'message' => 'berhasil update kategori' . ' ' . $category->nama_kategori,
-            'data' => $category
+            'message' => 'berhasil update kategori',
+            'data' => $testimoni
         ]);
     }
 
 
-    public function destroy(Category $category)
+    public function destroy(Testimoni $testimoni)
     {
-        File::delete('uploads/' . $category->gambar);
-        $category->delete();
+        File::delete('uploads/' . $testimoni->gambar);
+        $testimoni->delete();
         return response()->json([
             'message' => 'success'
         ]);
